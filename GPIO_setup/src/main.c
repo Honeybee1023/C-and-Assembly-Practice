@@ -20,17 +20,27 @@ void app_main() {
 
     setup();
 
-    pinWrite(LED1, 1);  // Turn LED1 on
-    pinWrite(LED2, 0);  // Turn LED2 off
+    // pinWrite(LED1, 1);  // Turn LED1 on
+    // pinWrite(LED2, 0);  // Turn LED2 off
 
     while(1){
         // main loop of our program
 
         int x = pinRead(BTNL);  // Read value of BTNL
-        if (x == 1){
-            printf("button not pressed\n");
-        } else if (x == 0){
-            printf("BUTTON PRESSED!\n");
+        int y = pinRead(BTNR);  // Read value of BTNR
+
+        //implement XOR gate on LED1
+        if (x != y){
+            pinWrite(LED1, 1);  // Turn LED1 on
+        } else if (x == y){
+            pinWrite(LED1, 0);  // Turn LED1 off
+        }
+
+        //implement AND gate on LED2
+        if (x == 0 && y == 0){
+            pinWrite(LED2, 1);
+        } else {
+            pinWrite(LED2, 0);
         }
     }
 }
