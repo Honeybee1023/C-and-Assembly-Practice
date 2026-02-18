@@ -55,7 +55,7 @@ void fillScreenBuffer(char * message, int total_offset){
 void app_main(){
     setup();
 
-    char message[] = "     THEY SEE ME SCROLLIN' THEY HATIN'     ";
+    char message[] = "     HELLO BUNNY I WUV UUUUU     ";
     int len = messageLength(message);  // TASK 1: CALCULATE MESSAGE LENGTH
     int offset = 0;
     while(1){
