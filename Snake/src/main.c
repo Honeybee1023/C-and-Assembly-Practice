@@ -201,8 +201,21 @@ uint8_t snakeCollisionCheck(struct Snake *snake){
             return 1;
         }
     }
+    if (getX(snake->body[0]) == 0 && snake->direction == right){
+        return 1;
+    }
+    if (getX(snake->body[0]) == 31 && snake->direction == left){
+        return 1;
+    }
+    if (getY(snake->body[0]) == 0 && snake->direction == up){
+        return 1;
+    }
+    if (getY(snake->body[0]) == 7 && snake->direction == down){
+        return 1;
+    }
     return 0;
 }
+
 
 
 
@@ -238,6 +251,7 @@ void app_main() {
         int btnl = pinRead(BTNL);
         int btnr = pinRead(BTNR);
         int btnd = pinRead(BTND);
+        int btnf = pinRead(BTNF);
         if (btnu == 0 && snake.direction != down){
             snake.direction = up;
         }
@@ -249,6 +263,22 @@ void app_main() {
         }
         if (btnd == 0 && snake.direction != up){
             snake.direction = down;
+        }
+        if (btnf == 0){
+            setup(); // System setup
+
+            // UNCOMMENT FOR PART 10
+            for (int i=0; i<3; i++){
+                setX(&snake.body[i], 5);
+                setY(&snake.body[i], 3-i);
+            }
+            snake.length = 3;
+            snake.direction = left;
+
+            uint8_t food = 0; // food in top right corner of the game board
+
+            while(generateFood(&snake, &food) != 0); // Generate food initially
+            drawBoard(&snake, food);
         }
         
         updateSnake(&snake);
@@ -269,7 +299,26 @@ void app_main() {
             // Game ends
             eraseBuffer(); // Clear game board
             drawBuffer();
-            while(1); // Infinite loop since game is over.
+            while(1){
+                int btnf = pinRead(BTNF);
+                if (btnf == 0){
+                    setup(); // System setup
+
+                    // UNCOMMENT FOR PART 10
+                    for (int i=0; i<3; i++){
+                        setX(&snake.body[i], 5);
+                        setY(&snake.body[i], 3-i);
+                    }
+                    snake.length = 3;
+                    snake.direction = left;
+
+                    uint8_t food = 0; // food in top right corner of the game board
+
+                    while(generateFood(&snake, &food) != 0); // Generate food initially
+                    drawBoard(&snake, food);
+                    break;
+                }
+            }
         }
 
         // Code to limit frequency of loop so that gameplay is possible.
